@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole } = require('./db/functions');
+const logo = require('asciiart-logo');
 
 
 function addNewDepartment(){
@@ -44,6 +45,8 @@ function addNewEmployee(){
     })
 }
 function mainMenu(){
+    const logoText = logo({ name: "Employee Tracker" }).render();
+    console.log(logoText);
     inquirer.prompt([
         {
             type: "list",
@@ -60,7 +63,7 @@ function mainMenu(){
                 getAllRoles();
                 break;
             case "View all employees":
-                getAllRoles();
+                getAllEmployees();
                 break;
             case "Add a department":
                 addNewDepartment();

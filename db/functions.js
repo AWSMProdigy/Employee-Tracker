@@ -1,7 +1,8 @@
 const db = require('./db.js');
 
 function getAllEmployees(){
-    db.query('SELECT * FROM employee', function (err, results) {
+    // Employee id, first name, last name, job title, department, salary, and manager
+    db.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee INNER JOIN role ON employee.role_id=role.id INNER JOIN department on role.department_id=department.id', function (err, results) {
         console.table(results);
     });
 }

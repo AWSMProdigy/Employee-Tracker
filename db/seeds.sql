@@ -12,6 +12,6 @@ VALUES ("Clerk", 420.69, 1),
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES ("Kyle", "Sousa", 3, null),
-       ("Hodaka", "Morishima", 3, null),
-       ("Hina", "Amano", 1, null),
+       ("Hodaka", "Morishima", 3, 1),
+       ("Hina", "Amano", 1, 1),
        
