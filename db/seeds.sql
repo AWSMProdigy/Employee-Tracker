@@ -5,10 +5,10 @@ VALUES ("Human Resources"),
        ("Finances");
 
 INSERT INTO role (title, salary, department_id)
-VALUES ("Human Resource", 420.69, 1),
-       ("Management", 690.42, 1),
-       ("Engineering", 460.92, 1),
-       ("Finances", 240.96, 1);
+VALUES ("Clerk", 420.69, 1),
+       ("Manager", 690.42, 2),
+       ("Engineer", 460.92, 3),
+       ("Treasurer", 240.96, 4);
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES ("Kyle", "Sousa", 3, null),

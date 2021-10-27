@@ -7,13 +7,42 @@ function addNewDepartment(){
         {
             type:"input",
             name: "newDep",
-            message: "What do you want to name the new apartment?"
+            message: "What do you want to name the new department?"
         }
     ]).then((response) => {
-        await addDepartment(response.newDep);
+        console.log(response.newDep);
+        addDepartment(response.newDep);
+        mainMenu();
     })
 }
 
+function addNewRole(){
+    inquirer.prompt([
+        {
+            type:"input",
+            name: "newDep",
+            message: "What do you want to name the new role?"
+        }
+    ]).then((response) => {
+        console.log(response.newDep);
+        addDepartment(response.newDep);
+        mainMenu();
+    })
+}
+
+function addNewEmployee(){
+    inquirer.prompt([
+        {
+            type:"input",
+            name: "newDep",
+            message: "What do you want to name the new employee?"
+        }
+    ]).then((response) => {
+        console.log(response.newDep);
+        addDepartment(response.newDep);
+        mainMenu();
+    })
+}
 function mainMenu(){
     inquirer.prompt([
         {
@@ -34,13 +63,13 @@ function mainMenu(){
                 getAllRoles();
                 break;
             case "Add a department":
-                addDepartment();
+                addNewDepartment();
                 break;
             case "Add a role":
-                addRole();
+                addNewRole();
                 break;
             case "Add an employee":
-                addEmployee();
+                addNewEmployee();
                 break;
             case "Update an employee role":
                 updateRole();
@@ -48,4 +77,6 @@ function mainMenu(){
         }
     })
 }
+
+mainMenu();
 
