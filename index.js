@@ -105,12 +105,12 @@ function addNewEmployee(){
 }
 
 function updateRole(){
-    db.query('SELECT employee.id,employee.first_name,employee.last_name,role.id AS "role_id"FROM employees, role, department WHERE department.id = role.department_id AND role.id = employee.role_id', (err, res) => {
+    db.query('SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id" FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id', (err, res) => {
         let empChoices = [];
         res.forEach((element) => {empChoices.push(`${element.first_name} ${element.last_name}`)});
-        db.query('SELECT role.id, role.title FROM role', (err, res) => {
+        db.query('SELECT role.id, role.title FROM role', (err, res2) => {
             let roleChoices = [];
-            res.forEach((element) => {roles.push(element.title)});
+            res2.forEach((element) => {roleChoices.push(element.title)});
             inquirer.prompt([
                 {
                     name: "empToChange",
@@ -128,10 +128,20 @@ function updateRole(){
             .then((response) => {
                 let roleID, empID;
 
-                res.forEach((element) => {
+                res2.forEach((element) => {
                     if(response.empRole === element.title){
                         roleID = element.id;
                     }
+                })
+
+                res.forEach((element) => {
+                    if(response.empToChange === `${element.first_name} ${element.last_name}`){
+                        empID = element.id;
+                    }
+                })
+                db.query(`UPDATE employee SET employee.role_id = ${roleID} WHERE employee.id = ${empID}`, (err, res) => {
+                    console.log("Employee's role updated!");
+                    mainMenu();
                 })
             })
         })
