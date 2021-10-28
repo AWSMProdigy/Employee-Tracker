@@ -31,7 +31,7 @@ function addNewRole(){
             message: "What is the salary of the new role?"
         }
     ]).then((response) => {
-        const roleName = [response.fName, response.lName];
+        const roleName = [response.newRole, response.newSal];
         db.query("SELECT * from department", (err, res) => {
             const depChoices = res.map(({id, name})  => ({
                 name: name,

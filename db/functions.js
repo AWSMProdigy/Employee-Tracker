@@ -31,6 +31,7 @@ function addDepartment(newDep){
 }
 
 function addRole(roleName, salary, departmentID){
+    console.log(roleName, salary, departmentID);
     db.query(`INSERT INTO role (title, salary, department_id) VALUES ('${roleName}', '${salary}', '${departmentID}')`, function (err, results) {
         if(err){
             throw err;
