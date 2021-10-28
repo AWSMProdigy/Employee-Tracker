@@ -22,7 +22,7 @@ function getAllRoles(){
 }
 
 function giveEmployees(){
-    db.promise().query('SELECT employee.id, employee.first_name, employee.last_name FROM employee'), function (err, results) {
+    db.query('SELECT employee.id, employee.first_name, employee.last_name FROM employee'), function (err, results) {
         console.log(results);
     };
 }

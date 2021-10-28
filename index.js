@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole, giveDepartments, giveEmployees, giveRoles } = require('./db/functions');
 const logo = require('asciiart-logo');
+const db = require('./db/db.js');
 
 
 function addNewDepartment(){
@@ -32,8 +33,6 @@ function addNewRole(){
 }
 
 function addNewEmployee(){
-    giveEmployees();
-    
     inquirer.prompt([
         {
             type:"input",
@@ -45,20 +44,42 @@ function addNewEmployee(){
             name: "lName",
             message: "What is the last name of the new employee?"
         },
-        {
-            type:"input",
-            name: "empRole",
-            message: "What is the employee's role?",
-        },
-        {
-            type:"input",
-            name: "empMan",
-            message: "Who is the employee's manager?",
-        }
-    ]).then((response) => {
-        addEmployee(response.fName, response.lName, response.empRole, response.empMan);
-        mainMenu();
-    })
+        ]).then((response) => {
+            const empName = [response.fName, response.lName];
+            db.query("Select roles.id, roles.title FROM roles", (err, res) => {
+                const roleChoices = res.map(({id, title}) => ({name: title, value: id}));
+                inquirer.prompt([
+                    {
+                        type: "list",
+                        name: "empRole",
+                        message: "What is the employee's role?",
+                        choices: roleChoices
+                    }
+                ]).then(roleDecision => {
+                    const empRole = roleDecision.empRole;
+                    empName.push(empRole);
+                    db.query("SELECT * FROM employees", (err, res) => {
+                        const managerChoices = res.map(({id, first_name, last_name}) => ({
+                            name:  first_name + " " + last_name,
+                            value: id
+                        }));
+                        inquirer.prompt([
+                            {
+                                type: "list",
+                                name: "empMan",
+                                message: "Who is the employee's manager?",
+                                choices: managerChoices
+                            }
+                        ]).then(manChoice => {
+                            const empMan = manChoice.empMan;
+                            empName.push(empMan);
+                            addEmployee(empName[0], empName[1], empName[2], empName[3]);
+                            mainMenu();
+                        })
+                    })
+                })
+            })
+        })
 }
 function mainMenu(){
     const logoText = logo({ name: "Employee Tracker" }).render();
