@@ -47,8 +47,4 @@ function addEmployee(fName, lName, roleID, managerID){
     });
 }
 
-function updateRole(){
-    
-}
-
-module.exports = { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole }
+module.exports = { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee }

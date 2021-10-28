@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole } = require('./db/functions');
+const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee } = require('./db/functions');
 const logo = require('asciiart-logo');
 const db = require('./db/db.js');
 
@@ -102,6 +102,40 @@ function addNewEmployee(){
                 })
             })
         })
+}
+
+function updateRole(){
+    db.query('SELECT employee.id,employee.first_name,employee.last_name,role.id AS "role_id"FROM employees, role, department WHERE department.id = role.department_id AND role.id = employee.role_id', (err, res) => {
+        let empChoices = [];
+        res.forEach((element) => {empChoices.push(`${element.first_name} ${element.last_name}`)});
+        db.query('SELECT role.id, role.title FROM role', (err, res) => {
+            let roleChoices = [];
+            res.forEach((element) => {roles.push(element.title)});
+            inquirer.prompt([
+                {
+                    name: "empToChange",
+                    type: "list",
+                    message: "Which employee's role do you want to update?",
+                    choices: empChoices
+                },
+                {
+                    name: "empRole",
+                    type: "list",
+                    message: "Which role do you want to assign the selected employee?",
+                    choices: roleChoices
+                }
+            ])
+            .then((response) => {
+                let roleID, empID;
+
+                res.forEach((element) => {
+                    if(response.empRole === element.title){
+                        roleID = element.id;
+                    }
+                })
+            })
+        })
+    })
 }
 function mainMenu(){
     inquirer.prompt([
