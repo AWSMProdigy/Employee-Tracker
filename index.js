@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole } = require('./db/functions');
+const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole, giveDepartments, giveEmployees, giveRoles } = require('./db/functions');
 const logo = require('asciiart-logo');
 
 
@@ -32,11 +32,29 @@ function addNewRole(){
 }
 
 function addNewEmployee(){
+    
     inquirer.prompt([
         {
             type:"input",
-            name: "newDep",
-            message: "What do you want to name the new employee?"
+            name: "fName",
+            message: "What is the first name of the new employee?"
+        },
+        {
+            type:"input",
+            name: "lName",
+            message: "What is the last name of the new employee?"
+        },
+        {
+            type:"list",
+            name: "empRole",
+            message: "What is the employee's role?",
+            choices: 
+        },
+        {
+            type:"list",
+            name: "empMan",
+            message: "Who is the employee's manager?",
+            choices: 
         }
     ]).then((response) => {
         console.log(response.newDep);
