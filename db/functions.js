@@ -21,24 +21,6 @@ function getAllRoles(){
     });
 }
 
-function giveEmployees(){
-    db.query('SELECT employee.id, employee.first_name, employee.last_name FROM employee'), function (err, results) {
-        console.log(results);
-    };
-}
-
-function giveRoles(){
-    db.query('SELECT role.id, role.title FROM roles'), function (err, results) {
-        console.log(results);
-    };
-}
-
-function giveDepartments(){
-    db.query('SELECT department.id, department.name FROM departments'), function (err, results) {
-        console.log(results);
-    };
-}
-
 function addDepartment(newDep){
     console.log(newDep);
     db.query(`INSERT INTO department (name) VALUES ('${newDep}')`, function (err, results) {
@@ -68,4 +50,4 @@ function updateRole(){
     
 }
 
-module.exports = {getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole, giveEmployees, giveRoles, giveDepartments}
+module.exports = { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole }

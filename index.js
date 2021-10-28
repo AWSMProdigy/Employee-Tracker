@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole, giveDepartments, giveEmployees, giveRoles } = require('./db/functions');
+const { getAllEmployees, getAllDepartments, getAllRoles, addDepartment, addRole, addEmployee, updateRole } = require('./db/functions');
 const logo = require('asciiart-logo');
 const db = require('./db/db.js');
 
@@ -22,13 +22,35 @@ function addNewRole(){
     inquirer.prompt([
         {
             type:"input",
-            name: "newDep",
+            name: "newRole",
             message: "What do you want to name the new role?"
+        },
+        {
+            type:"input",
+            name:"newSal",
+            message: "What is the salary of the new role?"
         }
     ]).then((response) => {
-        console.log(response.newDep);
-        addDepartment(response.newDep);
-        mainMenu();
+        const roleName = [response.fName, response.lName];
+        db.query("SELECT * from department", (err, res) => {
+            const depChoices = res.map(({id, name})  => ({
+                name: name,
+                value: id
+            }));
+            inquirer.prompt([
+                {
+                    type: "list",
+                    name: "depChoice",
+                    message: "Which department does the role belong to?",
+                    choices: depChoices
+                }
+            ]).then((response) => {
+                const depChoice = response.depChoice;
+                roleName.push(depChoice);
+                addRole(roleName[0], roleName[1], roleName[2]);
+                mainMenu();
+            })
+        })
     })
 }
 
@@ -46,7 +68,7 @@ function addNewEmployee(){
         },
         ]).then((response) => {
             const empName = [response.fName, response.lName];
-            db.query("Select roles.id, roles.title FROM roles", (err, res) => {
+            db.query("SELECT role.id, role.title FROM role", (err, res) => {
                 const roleChoices = res.map(({id, title}) => ({name: title, value: id}));
                 inquirer.prompt([
                     {
@@ -58,7 +80,7 @@ function addNewEmployee(){
                 ]).then(roleDecision => {
                     const empRole = roleDecision.empRole;
                     empName.push(empRole);
-                    db.query("SELECT * FROM employees", (err, res) => {
+                    db.query("SELECT * FROM employee", (err, res) => {
                         const managerChoices = res.map(({id, first_name, last_name}) => ({
                             name:  first_name + " " + last_name,
                             value: id
@@ -82,25 +104,27 @@ function addNewEmployee(){
         })
 }
 function mainMenu(){
-    const logoText = logo({ name: "Employee Tracker" }).render();
-    console.log(logoText);
     inquirer.prompt([
         {
             type: "list",
             name: "choice",
-            message: "What license did you need",
+            message: "What would you like to do?",
             choices: ["View all departments", "View all roles", "View all employees", "Add a department", "Add a role", "Add an employee", "Update an employee role"],
         },
         ]).then((response) =>{
+        console.log("\n");
         switch(response.choice){
             case "View all departments":
                 getAllDepartments();
+                mainMenu();
                 break;
             case "View all roles":
                 getAllRoles();
+                mainMenu();
                 break;
             case "View all employees":
                 getAllEmployees();
+                mainMenu();
                 break;
             case "Add a department":
                 addNewDepartment();
@@ -117,6 +141,8 @@ function mainMenu(){
         }
     })
 }
-
+const logoText = logo({ name: "Employee Tracker" }).render();
+console.log(logoText);
 mainMenu();
+
 
