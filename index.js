@@ -32,6 +32,7 @@ function addNewRole(){
 }
 
 function addNewEmployee(){
+    giveEmployees();
     
     inquirer.prompt([
         {
@@ -45,20 +46,17 @@ function addNewEmployee(){
             message: "What is the last name of the new employee?"
         },
         {
-            type:"list",
+            type:"input",
             name: "empRole",
             message: "What is the employee's role?",
-            choices: 
         },
         {
-            type:"list",
+            type:"input",
             name: "empMan",
             message: "Who is the employee's manager?",
-            choices: 
         }
     ]).then((response) => {
-        console.log(response.newDep);
-        addDepartment(response.newDep);
+        addEmployee(response.fName, response.lName, response.empRole, response.empMan);
         mainMenu();
     })
 }

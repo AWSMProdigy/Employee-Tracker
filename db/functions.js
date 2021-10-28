@@ -22,15 +22,21 @@ function getAllRoles(){
 }
 
 function giveEmployees(){
-    return db.query('SELECT * FROM employee');
+    db.promise().query('SELECT employee.id, employee.first_name, employee.last_name FROM employee'), function (err, results) {
+        console.log(results);
+    };
 }
 
 function giveRoles(){
-    return db.query('SELECT * FROM role');
+    db.query('SELECT role.id, role.title FROM roles'), function (err, results) {
+        console.log(results);
+    };
 }
 
 function giveDepartments(){
-    return db.query('SELECT * FROM department');
+    db.query('SELECT department.id, department.name FROM departments'), function (err, results) {
+        console.log(results);
+    };
 }
 
 function addDepartment(newDep){
